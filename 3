@@ -1,0 +1,155 @@
+x=[1,2,3]
+x.append(4)#在尾部追加元素
+x=[1,2,3,4]
+x.index(3)#查看3在列表下标中位置
+x.insert(0,0)#在列表开始处插入0，后面元素自动向后移动索引加1
+x.extend([5,6,7])#在尾部追加多个元素
+x.pop()#删除并返回指定位置上元素，不指定时默认为最后一个
+x=[1,2,1,1,2]
+x.remove(2)#删除第一个值为2的元素
+x=list(range(11))
+x.reverse()#把所有元素翻转或者逆序
+x=list(range(11))
+import random
+random.shuffle(x)#打乱列表中元素顺序
+all(x)#测试所有元素是否等价于True
+any(x)#测试是否存在等价于True的元素
+list(zip(x,[1]*11))#两个列表元素重新组合
+list(zip(['a','b','c'],[1,2]))#两个列表不等长以短的为准
+a=list('董付国'.encode())#encode()是字符串方法，默认使用UTF-8进行编码
+b=bytes(a)#把列表中字节连接为字符串
+b.decode()#是字符串方法
+xList=list(range(5))
+yList=list(range(5,10))
+zList=[x+y for x,y in zip(xList,yList)]#向量加法
+zList=[x-y for x,y in zip(xList,yList)]#向量减法
+sum([x*y for x,y in zip(xList,yList)])#内积
+zList=[x*5 for x in xList]#向量与标量相乘
+from random import randint
+x=[randint(1,10) for i in range(20)]#20个介于[1,10]的整数
+x
+m=max(x)
+[index for index,value in enumerate(x) if value==m]#最大整数出现的位置
+xList=[1,2,3]
+yList=[3,1,4]
+[(x,y) for x,y in zip(xList,yList) ]
+[(x,y) for x in xList if x==1 for y in yList if y!=x]
+result=[]
+for x in xList:
+    if x==1:
+       for y in yList:
+        if y!=x:
+            result.append((x,y))
+result
+from random import sample
+matrix=[sample(range(1,20),8) for i in range(5)]
+for row in matrix:#输出原始矩阵
+    print(row)
+result=[]#初始化一个空列表存储转置后矩阵
+num_cols=len(matrix[0])#获取第一行的长度，即矩阵的列数
+for i in range(num_cols):#遍历矩阵的每一列
+    new_row=[row[i] for row in matrix]#将每一行的第 i 个元素收集起来形成一个新行new_row(原始矩阵列)
+    result.append(new_row)#将新行添加到结果列表中
+for row in result:#输出转置后的矩阵
+    print(row)
+import numpy as np
+matrix=np.matrix([[1,2,3,4],[5,6,7,8],[9,10,11,12]])
+matrix
+matrix.T
+matrix=[[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+for row in matrix:#输出原始矩阵中的每一行
+    print(row)
+result=list(map(list,zip(*matrix)))#使用zip函数将矩阵的行和列交换，然后使用map函数将结果转换为列表形式
+for row in result:
+    print(row)
+x=[3,7,23,21,8,10]
+avg=sum(x)/len(x)
+s=[(xi-avg)**2 for xi in x]
+s=(sum(s)/len(s))**0.5
+print(s)
+x=np.array([3,7,23,21,8,10])
+x.std()#计算样本标准差
+x=(1,2,3)#直接把元组赋值给一个变量
+x[0]#元组支持使用下标访问特定位置的元素
+x[-1]#-1表示最后一个元素下标，元组也支持双向索引
+x=(3,)#元组中只有一个元素，必须在后面多写一个逗号
+x
+x=(5)#如果不加逗号括号也没有用
+x
+x=3,5,7#使用逗号分隔多个数据，虽然没有圆括号，但是也创建元组
+x
+x=()#空元组
+x=tuple()#空元组
+tuple(range(5))#使用tuple将其他迭代对象转换为元组
+tuple(map(str,range(5)))#将map对象转换为元组
+tuple({5,9,13,2})#将集合转换为元组，集合是无序的
+g=((i+2)**2 for i in range(10))#创建生成器对象
+g
+tuple(g)#将生成器对象转换为元组
+list(g)#生成器对象已遍历结束
+g=((i+2)**2 for i in range(10))#创建生成器对象
+next(g)#使用next函数获取生成器
+next(g)#第二次调用
+g=((i+2)**2 for i in range(10))
+for item in g:#使用循环遍历生成器对象中的元素
+    if item>50:
+        break
+    print(item,end=' ')
+aList=[3,4,5,6,7,9,11,13,15,17]
+aList[:]#返回包含原列表中所有元素的新列表
+aList[::-1]#返回包含原列表
+aList[::2]#从下标0开始，隔一个取一个
+aList[3:6]#指定切片的开始和结束位置
+aList[0:100]#切片结束位置大于列表长度时，从列表尾部截断
+aList=[3,5,7]
+aList[len(aList):]=[9]#在列表尾部增加元素,aList[len(aList):] 表示从列表的末尾开始的一个空切片。因为 len(aList) 正好是列表最后一个元素的下一个位置的索引，所以这个切片实际上是指向列表末尾之后的位置
+aList
+aList[:0]=[1,2]#在列表头插入多个元素
+aList[3:3]=[4]#在列表中间位置插入元素
+aList
+aList=[3,5,7,9]
+aList[:3]=[1,2,3]#替换列表元素，等号两边的列表长度相等
+aList
+aList[3:]=[4,5,6]#切片连续。等号两边的列表长度可以不相等
+aList
+aList[::2]=['a','b','c']#隔一个修改一个
+aList
+aList=[3,5,7,9]
+aList[:3]=[]#删除列表前三个元素
+aList
+aList=[3,5,7,9,11]
+del aList[:3]#删除前三个,#切片元素连续
+aList=[3,5,7,9,11]
+del aList[::2]#隔一个一删除，切片元素不连续
+aList
+maxNumber=int(input('请输入一个自然数：'))
+lst=list(range(2,maxNumber))
+m=int(maxNumber**0.5)#最大整数的平方根
+for index,value in enumerate(lst):
+    if value>m:#如果当前数字已大于最大整数的平方根，结束判断
+        break
+    lst[index+1:]=filter(lambda x:x%value!=0,
+                        lst[index+1:])#使用 filter 函数过滤掉当前素数的倍数，并将结果转换回列表
+    print(lst)
+x,y,z=1,2,3#多个变量同时赋值
+x,y,z=(False,3.5,'exp')#元组支持序列解包==多个对象同时赋值
+x,y,z=[1,2,3]#列表支持序列解包
+x,y=y,x#交换两个变量的值
+x,y,z=range(3)#range支持序列解包
+x,y,z=map(int,'123')#map对象支持序列解包
+s={'a':1,'b':2,'c':3}
+b,c,d=s#对字典的键值进行解包
+b
+b,c,d=s.items()#对字典元素进行解包
+b,c,d=s.values()#对字典的值进行解包
+print(b,c,d)
+keys=['a','b','c','d']
+values=[1,2,3,4]
+for k,v in zip(keys,values):#同时遍历多个序列中对应位置上的元素
+    print(k,v)
+x=['a','b','c']
+for i,v in enumerate(x):#遍历元素，同时获取对应的下标
+    print(i,v)
+s={'a':1,'b':2,'c':3}
+for k,v in s.items():
+    print(k,v)
