@@ -1,1 +1,642 @@
+aDict={'IP':'127.0.0.1','port':'80'}#直接赋值，创建字典对象
+aDict
+x=dict()#创建空字典
+x={}#创建空字典
+keys=['a','b','c','d']
+values=[1,2,3,4]
+aDic=dict(zip(keys,values))#根据zip对象创建字典，zip每个对象包含两个键值，第一个作为键值
+aDic
+aDict=dict(name='Dong',age=39)
+aDict={'name':'Dong','age':39}
+aDict=dict.fromkeys(['name','age','sex'])#给定的数据作为键，创建值为空的字典
+aDict
+{'name':None,'age':None,'sex':None}
+del aDict #删除字典
+words=['Hello','Python','world']
+{word:word.upper() for word in words}#使用字典推导式创建字典{key_expression: value_expression for item in iterable}
+aDict={'age':39,'name':'Dong','sex':'male'}
+aDict['age']#指定的键存在，则返回对应的值，否则抛出异常
+if 'address' in aDict:
+    print(aDict['adress'])
+else:
+    print('Error')
+try:
+    print(aDict['age'])#使用异常结构避免代码引发异常而奔溃
+except:
+    print('指定的键不存在，请检查')
+aDict.get('age')#字典存在该键，则存在对应值，不存在返回默认值
+aDict.get('adress','Not Exists')
+sock={'IP':'127.0.0.1','port':80}
+sock.update({'IP':'192.168.9.62','protocol':'TCP'})#修改‘ip’这个键对应的值，同时增加新元素protocol：tcp
+sock
+sock.popitem()#随机删除并返回一个元素
+sock.pop('IP')#删除并返回指定键对应的元素
+del sock['port']#删除指定键对应的元素
+sock
+from string import digits
+from random import choice
+z=''.join(choice(digits) for i in range(1000))
+result={}#初始化结果字典
+for ch in z:
+    result[ch]=result.get(ch,0)+1#统计每个数字字符的频率
+for digit,fre in sorted(result.items()):#按数字字符排除并输出结果
+    print(digit,fre,sep=':')
+import collections
+import random
+data=random.choices(range(10),k=100)
+freq=collections.Counter(data)
+freq
+freq.most_common(1)#查看次数最多的元素以及次数
+from random import randrange
+#历史电影打分数据，一共10个用户，每个用户对3到9个用户进行打分，每个电影评分最低1分，最高5分，
+data={'user'+str(i):{'film'+str(randrange(1,15)):randrange(1,6)
+                         for j in range(randrange(3,10))}
+     for i in range(10)}
+#模拟当前打分数据，为5部电影随机打分
+user={'film'+str(randrange(1,15)):randrange(1,6) for i in range(5)}
+#最相似的用户及其对电影打分情况
+#两个用户共同打分的电影最多
+#并且所有电影打分差值的平方和最小
+f=lambda item:(-len(item[1].keys()&user),
+              sum(((item[1].get(film)-user.get(film))**2
+                  for film in user.keys()&item[1].keys())))
+similarUser,films=min(data.items(),key=f)
+#在输出结果中第一个列表表示共同打分的电影的数量
+#第二列表示二人打分之间的相似度，数字越小表示越相似
+#然后是该用户对电影的打分数据
+print('known data'.center(50,'='))
+for item in data.items():
+    print(len(item[1].keys()&user.keys()),
+         sum(((item[1].get(film)-user.get(film))**2
+             for film in user.keys()&item[1].keys())),
+    item,
+    sep=':')
+print('current user'.center(50,'='))
+print(user)
+print('most similar user and his film'.center(50,'='))
+print(similarUser,films,sep=':')
+print('recommended film'.center(50,'='))
+#在当前没看过的电影中选择打分最高的进行推荐
+print(max(films.keys()-user.keys(),key=lambda film:films[film]))
+a={3,5}#创建集合对象,集合中每个元素都是不可变
+set([0,1,2,3,4,5,6,7,8,0])#转换时自动去掉重复的元素
+set('Hello world')#字符串转为集合，自动去除重复的集合元素
+set([(1,2),(3,),{4}])#集合不能作为集合的元素
+s={20,30,40}
+s.add(50)#自动调整顺序
+s
+s.update({30,10})#自动忽略重复元素
+s.discard(50)#删除50
+s
+s.discard(3)#集合中没有3，该操作被忽略
+s.pop()#随机弹出并删除一个元素
+a_set=set([8,9,10,11,12,13])
+b_set={0,1,2,3,4,5,6}
+a_set|b_set#并集返回新元素，自动忽略重复元素
+a_set&b_set#交集
+a_set-b_set#差集
+a_set^b_set#对称差集
+{1,2,3}<{1,2,3,4}#第一个集合是第二个集合真子集
+{1,3,2}<={1,2,3}#第一个元素是第二个元素子集
+{1,2,5}>{1,2,4}#第二集合不是子集
+x={1,8,30,2,5}#集合存储和写入顺序不一样
+x
+len(x)#返回元素个数
+sorted(x)#内置函数返回列表
+list(map(str,x))
+list(filter(lambda item:item%5==0,x))#保留能被5整除的数
+list(enumerate(x))#元素与索引一起返回并成列表
+all(x)#检查是否所有元素都等价于x
+any(x)#检查是否有元素等价x
+list(zip(x))#支持zip函数，不支持reversed函数
+n=int(input('请输入一个自然数：'))
+numbers=set(range(2,n))#生成指定范围的候选整数，使用集合存储
+m=int(n**0.5)+1#最大数的平方根
+for p in range(2,m):#遍历最大整数平方根之内的自然数
+    for i in range(2,n//p+1):
+        numbers.discard(i*p)
+print(numbers)
+from string import digits
+from random import choices
+text=''.join(choices(digits,k=100))#转换为集合，只保留唯一字符
+uniqueCharacters=set(text)
+for ch in uniqueCharacters:#统计每个唯一字符出现的次数
+    print(ch,text.count(ch),sep=':')
+path=r'C:\Python37\new.txt'
+fp=open(path)
+print(fp.read(10))#读取并输出前10个文字
+#format方法使用{index/name:fmt}
+print('{0:.3f}'.format(1/3))#保留3位小数
+'{0:%}'.format(3.5)#格式化为百分数
+'{0:.2%}'.format(3.5)#保留两位小数
+'{0:10.2%}'.format(3.5)#设置占10个字符位置，右对齐
+'{0:<10.2%}'.format(3.5)#小于号表示左对齐
+"The number{0:,} in hex is:{0:#x},in oct is {0:#o}".format(55)
+"The number{0:,} in hex is:{0:x},the number {1} in oct is {1:o}".format(5555,55)
+"The number{1} in hex is:{1:#x},the number {0} in oct is {0:#o}".format(5555,55)
+"my name is {name},my age is {age},and my QQ is {qq}".format(name="Dong",qq="12343***",age=38)
+"I'm {age:d} years old".format(age=0o51)
+'{0:<8d},{0:^8d},{0:>8d}'.format(65)#左对齐，居中对齐，右对齐
+'{0:_},{0:_x}'.format(10000000)#使用下划线作为千分位分隔符
+weather=[("Monday","rainy"),("Yuesday","sunny"),("Wednesday","sunny"),("Friday","cloudy")]
+formatter="Weather of'{0[0]}' is '0[1]'".format
+for item in weather:#使用列表中的每个元素进行格式化
+    print(formatter(item))
+for item in map(formatter,weather):#使用map函数实现同样效果
+    print(item)
+name="Dong"
+age=41
+f'My name is {name},and I am {age} years old.'
+bookname='《Python可以这样学》'
+bookname.encode()#使用utf-8编码
+bookname.encode('gbk')#使用GNK编码
+bookname.encode().decode()#使用utf-8编码再解码
+text='Explicit is better than implicit'
+text.find('i')#字母i首次出现的位置
+text.rfind('i')#最后一次出现的位置
+text.rindex('i')
+text.index('i')
+text.count('i')#统计出现的次数
+text='''
+东边来个小朋友叫小松，手里拿着一捆葱
+西边来个小朋友叫小丛，手里拿着小闹钟
+小松手里的葱捆的松，掉在地上一些葱
+小丛忙放闹钟去拾葱，帮助小葱捆紧葱
+'''
+for index,ch in enumerate(text):#查找每个汉字的首次出现位置
+    if ch not in('\n','.','。') and index ==text.index(ch):
+        print((index,ch),end='')
+for index,ch in enumerate(text):#查找每个汉字最后出现的位置
+    if ch not in('\n','.','。') and index ==text.rindex(ch):
+         print((index,ch),end='')
+for index,ch in enumerate(text):#查找只出现过一次的汉字及其位置
+    if ch not in('\n','.','。') and text.index(ch) ==text.rindex(ch):
+          print((index,ch),end='')
+s='apple peach banana     pear'
+s.split(",")#使用逗号进行分隔
+s.split()#不指定分隔
+s.split(' ')
+#join方法将多个字符串进行连接
+':'.join(map(str,range(10)))#使用：作为连接符
+#结合使用join和split可以删除字符串中空白字符
+text='Hello old     are you'
+' '.join(text.split())
+s="What is Your name?"
+s.lower()#小写
+s.upper()#大写
+s.capitalize()#首字母大写
+s.title()#每个单词首字母大写
+s.swapcase()#大小写互换
+s="Python是一门非常优秀的编程语言"
+s.replace('编程','程序设计')#编程替换为程序设计
+from string import ascii_lowercase as lowercase
+table=''.maketrans(lowercase,lowercase[3:]+lowercase[:3])
+table#置换表ASCII97换为100，98换101以此类推
+'\n\nhello world   \n\n'.strip()#删除两侧空白字符
+"aaaaassddf".strip("a")#删除两侧的指定字符
+"aaaaaasddddffffg".rstrip("a")#删除字符串右侧
+"aaaaasddddffffg".lstrip("a")#删除字符串左侧
+'aaaassssdddffgy'.strip('gbade')#从字符串两侧、左侧、右侧删除包含的所有字符一层一层从外往里扒
+text = '''姓名：张三
+年龄：19
+性别男
+职业   学生
+籍贯：  地球'''
 
+# 分割字符串为多行
+information = text.split('\n')
+
+# 处理每一行
+for item in information:
+    # 检查冒号是否存在
+    if '：' in item:
+        # 分割键和值
+        key, value = item.split('：', 1)
+        # 清理键和值的前后空格
+        key = key.strip()
+        value = value.strip()
+    else:
+        # 如果没有冒号，将前两个字符作为键，剩余部分作为值
+        key = item[:2].strip()
+        value = item[2:].strip()
+    
+    # 打印格式化的键值对
+    print(f"{key}: {value}")
+import os
+[filename
+for filename in os.listdir(r'D:\\')
+if filename.endswith(('.bmp','.jpj',',png','.gif'))]
+'1234abcd'.isalnum()#测试是否只包含字母和数字
+'\t\n\r'.isspace()#测试是否全部为空白字符串
+'aBC'.isupper()#测试是否全部为大写字母
+'1234abcd'.isalpha()#全部为英文字母返回True
+'1234abcd'.isdigit()
+'1234.0'.isdigit()#不能测试浮点数
+'1234'.isdigit()
+'Main Menu'.center(20)#居中对齐，两侧默认空格填充
+'Main Menu'.center(20,'_')#居中对齐，减号填充
+'Main Menu'.ljust(20,'#')#左对齐
+'Main Menu'.rjust(20,'#')#右对齐
+'Hello'+'hello'
+'%+8.3f'%(1/3)
+'%c,%d,%s'%(0x41,0x41,0x41)#格式化多个值，放在元组中%c用于将整数转换为对应的ASCII字符%d用于将整数转换为十进制形式%s用于将对象转换为字符串
+ord('董')#查看单个字的Unicode编码
+list(map(ord,'董付国'))
+chr(33891)#返回UNICODE编码对应的字符
+text='《玩转python轻松过二级》'
+max(text)#返回Unicode编码最大字符
+len(text)#字符串长度
+sorted(text)#按字符编码升序
+def add3(ch):
+    return chr(ord(ch)+3)#把第一个字符替换为后面第三个字符
+''.join(map(add3,text))
+list(enumerate(text))
+text[::-1]#使用切片反转字符串
+import datetime
+datetime.datetime.now()#获取当前日期和时间
+str(datetime.datetime.now())[:19]#获取年月日时分秒
+import zlib
+y=zlib.compress(text.encode())#压缩
+import re
+text='Special cases are not special enough to break the rules.'
+re.findall('\w+',text)#查找所有单词，\w：匹配任何字母数字字符，+：表示匹配前面的子表达式一次或多次
+re.split('[.\s]',text)#使用圆点和空白字符分隔[.\s]：即匹配任何单个字符或任何空白字符
+re.sub('enough','ENOUGH',text)#替换
+re.sub('[aes]','',text)#删除所有的aes
+re.findall(r'\be\w+',text)#查找字母e开头的单词\b：表示单词边界，匹配标识符或从文本提取单词使用\w+
+re.findall(r'\w+e\w+',text)#查找包含字母e的单词r'\w+e\w+' 会匹配那些在某个位置包含字母 e 的单词，且 e 前后都有其他字母数字字符或下划线。
+re.findall(r'\w+?k\b',text)#\w+?：这是一个非贪婪匹配，表示匹配一个或多个字母数字字符或下划线，但尽可能少地匹配。
+re.findall(r'\b\w{3}\b',text)#查找长度为3的单词
+re.findall(r'\b\w{3,6}\b',text)#查找长度3-6的单词
+re.findall(r'\bs\w+?\b',text,re.I)#查找以字母s和S开头的单词，？表示非贪心模式，re.I表示忽略大小写
+re.findall(r'\b\w+i\w+\b',text)#查找中间位置包含字母i
+re.findall('\d+\.\d+\.\d+','Python 2.7.13,Python 3.6.0')#查找指定格式字符串\d+\.\d+\.\d+：这个表达式由三部分组成，每部分都是 \d+，中间用 \. 连接。它用于匹配由三组数字组成，每组数字之间用点号分隔的字符串
+text='''姓名：张三，年龄：26，性别：男
+姓名：王麻子，年龄：47，性别：男
+姓名：小龙女，年龄：16，性别：女
+'''
+re.findall('姓名：(.+?)，年龄：(\d+)，性别：(.)',text)#圆括号里面表示要提取的信息
+text=r'one1two2three3four4five5six6seven7eight8nine9ten'
+re.split(r'\d+',text)#使用数字的连续出现作为分隔符
+re.findall(r'[a-zA-Z]+',text)#查找英文字母的连续出现a-z 表示匹配任意一个小写英文字母。A-Z 表示匹配任意一个大写英文字母。
+re.sub(r'\d','.',text)#数字用。代替
+from string import punctuation
+re.sub('['+punctuation+']','','abc,.e!f/?')#删除标点符号返回新字符串，[' + punctuation + ']：这是一个字符集，用于匹配 punctuation 中包含的任意一个字符
+s="It's a very good good idea"
+re.sub(r'(\b\w+) \1',r'\1',s)#删除连续的重复单词，(\b\w+) 是一个捕获组，用于提取匹配到的单词，\1 表示匹配与第一个捕获组相同的单词。 r'(\b\w+) \1'，用于匹配连续重复的单词,替换字符串 r'\1'，表示将匹配到的连续重复的单词替换为第一个捕获组匹配到的单词，即删除重复的单词
+import urllib.request#导入网络爬虫模块
+url=r'http://www.sdtbu.edu.cn/info/1123/14713.html'
+headers={'User-Agent':'Mozilla/5.0(Windows NT6.1;Win64;x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrom/62.0.3202.62 Safari/537.36'}
+req=urllib.request.Request(url,headers=headers)#伪装浏览器
+with urllib.request.urlopen(req) as fp:#读取url对应的网页代码
+    content=fp.read().decode()
+pattern=r'<img.+? src="(.+?)"'#提取网页图片地址
+for imgAdress in re.findall(pattern,content):
+    print(imgAdress)
+import jieba
+text='Python 之禅中有句非常重要的话，Readability counts'
+jieba.lcut(text)#lcut返回分词后的列表
+jieba.lcut('画质被')
+jieba.add_word('画质被')#自定义词汇添加到词典中
+jieba.lcut('画质被')
+import snownlp
+snownlp.SnowNLP(text).words
+from pypinyin import lazy_pinyin
+lazy_pinyin(text)#返回汉字拼音
+lazy_pinyin(text,1)#带声调
+lazy_pinyin(text,2)#另一种风格
+lazy_pinyin(text,3)#只返声母
+lazy_pinyin('重要',1)#识别多音字
+from collections import Counter
+from jieba import lcut
+text='''七巷一个漆匠，西巷一个锡匠。
+七巷漆匠用了西巷锡匠的锡，西巷锡匠用了七巷漆匠的漆，
+七巷漆匠气西巷锡匠用了漆，西巷锡匠讥七巷漆匠拿了锡。'''
+words=lcut(text)
+fre=Counter(words)
+print(fre.most_common(2))
+from random import choice
+from string import ascii_letters,digits#从 string 模块中导入 ascii_letters 和 digits，分别表示所有字母（大写和小写）和所有数字
+characters=digits+ascii_letters#候选字符集
+def generatePassword(n):#定义一个函数 generatePassword，接受一个参数 n，表示生成的密码长度。
+    return ''.join((choice(characters) for _ in range(n)))#使用生成器表达式
+    '''
+    choice(characters)：从 characters 字符集中随机选择一个字符。
+    for _ in range(n)：循环 n 次，生成 n 个随机字符。'''
+print(generatePassword(8))
+print(generatePassword(15))
+from random import choice
+from string import ascii_letters
+def check(sentences,words):
+    #返回包含至少一个关键词的句子列表
+    return [sentence\
+           for sentence in sentences\
+           if sum(sentence.count(word) for word in words)>0]
+sentences=['This is a test.',
+          'Beautiful is better than ugly',
+          'Explicit is better than implicit.',
+          'Simple is better than complex.',
+          'Spare is better than dense.',
+          'Readability counts.',
+          'Now is better than never.']
+words=['test','count','dense','is','simple']
+result=check(sentences,words)
+#计算每个句子中关键字总长度的占比
+'''
+sentence.count(word) * len(word)：计算句子中每个关键词 word 的总长度（出现次数乘以关键词长度）。
+sum(sentence.count(word) * len(word) for word in words)：对所有关键词计算其总长度之和。
+len(sentence)：计算句子的总长度。
+sum(...) / len(sentence)：计算关键词总长度占句子长度的比例。
+round(..., 3)：将比例保留三位小数。'''
+d={sentence:round(sum(sentence.count(word)*len(word)\
+                     for word in words)/len(sentence),3)\
+  for sentence in result}
+for item in d.items():
+    print(item)
+from itertools import cycle
+def crypt(source,key):
+    #字符不能直接进行异或运算，需要先转换为Unicode编码
+    #使用unicode编码运算后再转换为字符
+    '''func 是一个 lambda 函数，用于执行字符的异或运算。ord(x) 将字符 x 转换为对应的 Unicode 编码，^ 是异或运算符，chr(...) 将 Unicode 编码转换回字符。
+map(func, source, cycle(key)) 将 func 应用到 source 和循环的 key 上。cycle(key) 会无限循环密钥，直到与 source 的长度匹配。
+''.join(...) 将结果列表转换为字符串'''
+    func=lambda x,y:chr(ord(x)^ord(y))
+    return ''.join(map(func,source,cycle(key)))
+source='Beautiful is better than ugly.'
+key='Python'
+print('Before Encrypted:'+source)
+encrypted=crypt(source,key)
+print('After Encrypted:'+encrypted)
+decrypted=crypt(encrypted,key)
+print('After Decrypted:'+decrypted)
+from collections import Counter
+def checkAndModify(word):
+    fre=dict(Counter(word))#待检测单词的字母频次
+    '''
+    外层字典推导式
+for w in words：遍历 words 字典中的每个候选单词 w。
+w 是候选单词，words[w] 是候选单词 w 的字母频次字典。
+内层列表推导式
+fre[ch] - words[w].get(ch, 0) for ch in word：计算待检测单词 word 中每个字母 ch 在 word 和候选单词 w 中的频次差异。
+fre[ch]：获取待检测单词 word 中字母 ch 的频次。
+words[w].get(ch, 0)：获取候选单词 w 中字母 ch 的频次，如果 w 中没有字母 ch，则返回 0。
+words[w][ch] - fre.get(ch, 0) for ch in words[w]：计算候选单词 w 中每个字母 ch 在 w 和待检测单词 word 中的频次差异。
+words[w][ch]：获取候选单词 w 中字母 ch 的频次。
+fre.get(ch, 0)：获取待检测单词 word 中字母 ch 的频次，如果 word 中没有字母 ch，则返回 0。
+列表拼接
++：将两个列表拼接在一起，形成一个包含所有频次差异的列表。'''
+    similars = {
+        w: [
+            fre[ch] - words[w].get(ch, 0) for ch in word
+        ] + [
+            words[w][ch] - fre.get(ch, 0) for ch in words[w]
+        ]
+        for w in words
+    } #待测单词中各字母的频次与所有候选单词的距离，即字母频次之差
+    return min(similars.items(),
+              key=lambda item:sum(map(lambda i:i**2,item[1])))[0]#返回最接近的单词，字母频次之差最小的平方和
+words={'good','hello','hello','world','python','fuguo','yantai','shandong','great'}#候选单词
+words={word:dict(Counter(word)) for word in words}#每个单词中字母的频次
+for word in ['god','hood','wello','helo','pychon','guguo','shandong']:
+   print(word,':',checkAndModify(word))
+s='aaaaabcdaewrafgthojikldsovsfvdfb'
+result=[]
+for ch in s:
+    if ch in result:
+        result.remove(ch)#如果当前字符出现把之前的删除
+    result.append(ch)#记录当前字符
+print(result)
+import re
+def longest(s):
+    #查找所有连续数字
+    t=re.findall('\d+',s)
+    if t:
+        return max(t,key=len)#字符串中最长的子串
+    return 'no'
+print(longest('abc11123ddqa333'))
+import re
+text='''suppose my phone no.0535-1234567,
+yours is 010-12345678,
+his is 025-87654321.'''
+matchResult=re.findall(r'(\d{3,4})-(\d{7,8})',text)#(\d{3,4})：匹配 3 位或 4 位数字。-：匹配连字符 -(\d{7,8})：匹配 7 位或 8 位数字。
+for item  in matchResult:
+    print(item[0],item[1],sep='-')
+from jieba import cut
+def delPuncs(s):
+    f=lambda word:len(word)>1 or '\u4e00'<=word<='\u9fa5'#word长度大于1或者是一个中文符号
+    return ''.join(filter(f,cut(s)))#filter 函数用于过滤 cut(s) 生成的单词列表，只保留那些满足条件 f 的单词
+sentence='''
+    东边来个小朋友叫小松，手里拿着一捆葱。
+    西边来个小朋友叫小聪，手里拿着小闹钟。
+    小松手里的葱捆的松，掉在地上一些葱。
+    小丛放闹钟去拾葱，帮助小松捆紧葱。
+    小松夸小丛像雷锋，小丛说小松爱劳动。'''
+print(delPuncs(sentence))
+import string
+def check(pwd):
+    #密码必须至少包含6个字符
+    if not isinstance(pwd,str) or len(pwd)<6:#检查 pwd 是否是一个字符串
+        return 'not suitable for passed'
+    #密码等级强度与包含字符种类的对应关系
+    d={1:'weak',2:'below middle',3:'above middle',4:'strong'}
+    #分别用来标记pwd是否包含数字字母，大写字母和指定的标点符号
+    r=[False]*4#创建一个包含 4 个 False 值的列表 r，用于标记密码中是否包含以下四种字符类型：数字小写字母大写字母指定的标点符号（,.!;?<>）
+    for ch in pwd:
+        #是否包含数字
+        if not r[0] and ch in string.digits:
+            r[0]=True
+        #是否包含小写字母
+        elif not r[1] and ch in string.ascii_lowercase:
+            r[1]=True
+        #是否包含大写字母
+        elif not r[2] and ch in string.ascii_uppercase:
+            r[2]=True
+        #是否包含指定的标点符号
+        elif not r[3] and ch in ',.!;?<>':
+            r[3]=True
+    #统计包含的字符种类，返回密码强度
+    return d.get(r.count(True),'error')
+    '''r.count(True)：计算列表 r 中 True 的个数，即密码中包含的字符种类数。
+    d.get(r.count(True), 'error')：使用字典 d 查找对应的密码强度。如果 r.count(True) 不在字典 d 中，则返回 'error '''
+pwds=('a2Cd','abcdefghijklmn',string.ascii_letters,string.digits,'a1b2c3,d4h','1'*18)
+#依次输出字符串、字符串长度和安全强度
+for pwd in pwds:
+    print(pwd,len(pwd),check(pwd),sep=':')
+from random import choice,randint
+from string import ascii_letters,digits
+StringBase='\u7684\u4e00\u4e86\u662f\u6211\u4e0d\u5728\u4eba'\
+            '\u6709\u6765\u4ed6\u8fd9\u4e0a\u7740\u4e2a\u5730'
+characters=ascii_letters+digits+'_'#该字符串包含所有小写字母、大写字母、数字和下划线 _。这个字符串可以用于生成包含这些字符的随机字符串
+suffix=['.com','.org','.net','.cn']
+def getEmail():
+    username=''.join((choice(characters)
+                     for i  in range(randint(6,12))))#用户名的长度在 6 到 12 个字符之间
+    domain=''.join((choice(characters)
+                   for i in range(randint(3,6))))
+    return username+'@'+domain+choice(suffix)
+def getNameOrAddress(flag):
+    #flag=1表示返回随机姓名，flag=0表示返回随机地址
+    result=''
+    if flag==1:
+        #大部分中国人姓名再2-4个汉字
+        rangestart,rangeend=2,4#你可以使用 rangest 和 rangeend 来定义这个范围
+    elif flag==0:
+        #假设地址在10~20个汉字之间
+        rangestart,rangeend=10,20
+    else:
+        print('flag must be 1 or 0')
+        return ''
+    #生成并返回随机信息
+    for i in range(randint(rangestart,rangeend)):#i 是循环变量，但在循环体中没有直接使用 i，因为每次循环只是用来生成一个随机字符并添加到 result 中
+        result +=choice(StringBase)
+    return result
+def getSex():
+    return choice(('男','女'))
+def getAge():
+    return str(randint(18,100))
+for i in range(10):
+    name=getNameOrAddress(1)
+    sex=getSex()
+    age=getAge()
+    address=getNameOrAddress(0)
+    email=getEmail()
+    print(name,sex,age,address,email,sep=',')
+ from random import choices
+from re import findall
+# 生成一个包含 100,000 个字符的字符串，这些字符随机选择自 '+-'
+text = ''.join(choices('+-', k=100000))
+# 查找最长的连续加号子串
+MaxPlusLength = len(max(findall(r'\++', text), key=len))
+# 查找最长的连续减号子串
+MaxMinusLength = len(max(findall(r'-+', text), key=len))
+print('最长加号子串长度为：', MaxPlusLength)
+print('最长减号子串长度为：', MaxMinusLength)
+score=int(input('请输入一个百分制成绩：'))
+if score>100:
+    message='wrong score.must<100'
+elif score>=90:
+    message='A'
+elif score>=80:
+    message='b'
+elif score>=70:
+    message='c'
+elif score>=60:
+    message='d'
+elif score>=0:
+    message='f'
+else:
+    message='wrong score.must>0'
+print(message)
+score=int(input('请输入一个百分制成绩：'))
+degree='DCBAAF'
+if score>100 or score<0:
+    message='wrong score'
+else:
+    index=(score-60)//10
+    if index>=0:
+        message=degree[index]
+    else:
+        message=degree[-1]
+print(message)
+for n in range(200,1,-1):
+    for i in range(2,n):
+        if n%i==0:
+            break
+    else:
+       print(n)
+       break
+a,b=1,1
+while True:
+    a,b=b,a+b
+    if b>500:
+        print(b)
+        break
+from datetime import date,timedelta
+year,n,w=map(int,input('请输入year n w:').split())
+start=date(year,1,1)#创建一个date对象，表示输入年份的1月1日
+for i in range(7):
+    if start.isoweekday()==w:#判断当前start日期是星期几，isoweekday()方法返回的值是1（星期一）到7（星期天）。如果当前日期是输入的星期几w，则执行break语句
+        break
+    start=start+timedelta(days=1)#如果当前日期不是输入的星期几，则将start日期加1天，继续循环
+print(start+timedelta(weeks=n-1))#第n个星期的第w天的日期。由于已经找到了第一个w星期几的日期，所以只需在此基础上加上n-1周的时间差即可
+#假设能买x只大公鸡，x最大为21
+for x in range(21):
+    #假设能买y只母鸡，y最大为33
+    for y in range(33):
+        #假设能买z只小鸡
+        z=100-x-y
+        if z%3==0 and 5*x+3*y+z//3==100:
+            print(x,y,z)
+for num in range(100,1000):
+    r=map(lambda x:int(x)**3,str(num))
+    if sum(r)==num:
+        print(num)
+try:
+    year=int(input('请输入一个年份：'))
+except:
+    print('输入错误，请输入表示年份的整数。')
+else:
+     if year%400==0 or (year%4==0 and year%100==0):
+        print('yes')
+     else:
+        print('no')
+import calendar
+calendar.isleap(2016)#判断闰年
+from itertools import permutations
+
+def reach_kaprekar(number):
+    # 确保输入的是四位数
+    if len(number) != 4 or not number.isdigit():
+        print("请输入一个四位数。")
+        return
+    
+    # 如果输入的数字中所有数字都相同，无法进行操作
+    if len(set(number)) == 1:
+        print("输入的数字中所有数字相同，无法进行操作。")
+        return
+    
+    times = 0
+    while True:
+        # 对数字进行排序，得到最大和最小值
+        sorted_desc = ''.join(sorted(number, reverse=True))
+        sorted_asc = ''.join(sorted(number))
+        
+        # 计算差值
+        difference = int(sorted_desc) - int(sorted_asc)
+        
+        # 将差值转换为字符串，确保它是四位数
+        number = str(difference).zfill(4)
+        
+        times += 1
+        
+        # 检查是否达到卡普雷卡尔常数6174
+        if difference == 6174:
+            print(f"在{times}次迭代后达到6174")
+            break
+        elif times > 7:  # 根据理论，最多7次迭代就能达到6174
+            print("超过7次迭代仍未达到6174，可能存在错误。")
+            break
+from random import randint
+def guess(maxValue=100,maxTimes=5):
+    value=randint(1,maxValue)
+    for i in range(maxTimes):
+        prompt='start to Guess:' if i==0 else 'Guess again:'#如果i等于0，表达式的结果是'Correct!'。如果i不等于0，表达式的结果是'Guess again:'
+        try:
+            x=int(input(prompt))
+        except:
+            print('Must input an integer between 1 and ',maxValue)
+        else:
+            if x==value:
+                print('congratulations')
+                break
+            elif x>value:
+                print('Too big')
+            else :
+                print('Too little')
+        else:
+            print('Game over.Fall')
+         print('The value is',value)
+    
+
+
+   
