@@ -636,7 +636,279 @@ def guess(maxValue=100,maxTimes=5):
         else:
             print('Game over.Fall')
          print('The value is',value)
-    
+def getFrequency(s):
+    digits,alphabets,others=0,0,0
+    for ch in s:
+        if '0'<=ch<='9':
+            digits+=1
+        elif  'a'<=ch<='z' or 'A'<=ch<='z':#是否为字母
+            alphabets+=1
+        else:
+             others+=1
+    return(digits,alphabets,others)
+print(getFrequency('123,./abC'))#表示有3个数字（'123'），3个字母（'abC'），和2个其他字符（',./'）
+def isPalindrome(text):
+    if len(text)<=1:
+        return True
+    if text[0] !=text[-1]:#首位不同
+        return False
+    return isPalindrome(text[1:-1])#检查去掉首位字符的子字符串
+sentences=('deed','dad','need','rotor','civic','eye','redivider','noon','his','difference','a')
+for sentence in sentences:
+    print(sentence.ljust(12),end='')
+    if isPalindrome(sentence):
+        print('是回文')
+    else:
+        print('不是回文')
+from functools import reduce
+def myReduce(num,c):
+    if not all(map(lambda i:0<=int(i)<c,str(num))):
+        #0<=int(i)<c检查每个字符转换后的整数是否在0到c-1之间。str(num)确保num被处理为字符串，这样可以逐字符遍历
+        #map(lambda i: 0 <= int(i) < c, str(num))：将lambda表达式应用到str(num)的每个字符上，生成一个迭代器，该迭代器包含每个字符转换为整数后是否在指定范围内的布尔值
+        return 'Error'
+    def func(x,y):
+        return x*c+y
+    return reduce(func,map(int,str(num)))#map(int, str(num))将int函数应用到str(num)的每个字符上，将每个字符转换为整数
+myReduce(111,2)#把111看作二进制
+myReduce(1111,2)
+myReduce(1111,8)#把1111看作八进制
+def myMap(iterable,op,value):
+    if op not in ('+','-','*','/','//','%','**'):
+        return 'Error operator'
+    def func(i):
+        return eval(str(i)+op+str(value))#如果你有 i = 3, op = '+', 和 value = 5，那么 eval(str(i) + op + str(value)) 将计算字符串 "3+5"，结果是 8
+    return map(func,iterable)
+list(myMap(range(5),'+',5))#range(5)每个数字＋5
+def demo(a,b,c):
+    print(a,b,c)#形参相当于局部变量，调用函数时传递实参将实参引用传递给形参,实参和形参数量必须相同
+demo(3,4,5)
+def mySum(iterable,start=0):#start默认0
+    for item in iterable:
+        start+=item
+    return start
+print(mySum([1,2,3,4]))
+print(mySum([1,2,3,4],5))
+print(mySum(['1','2','3','4'],''))#字符串拼凑
+#*parameter接受任意位置多个位置实参并放入一个元组，**parameter接受任意多个关键参数并将其放入字典
+def demo(a,b,c,*p):
+    print(p)
+    print(a,b,c)
+demo=(1,2,3,4,5,6)
+def demo():
+    global x #声明或创建全局变量，必须在x之前执行该代码
+    x=3#修改全局变量的值
+    y=4#局部变量
+    print(x,y)
+x=5#在函数外部定义了全局变量
+demo()#本次调用修改了全局变量的值
+x
+y#局部变量在函数运行结束后自动删除
+def demo():
+    x=3#创建了局部变量
+    print(x)
+x=5#创建全局变量
+demo()
+x#函数调用结束不影响全局变量x的值
+from random import sample #sample选择多个不重复的随机元素
+data=[sample(range(100),10) for i in range(5)]
+for row in data:
+    print(row)
+for row in sorted(data,key=lambda row:row[1]):#按每行第二个元素升序输出
+    print(row)
+from functools import reduce
+reduce(lambda x,y:x*y,data[0])#第一行元素相乘
+list(map(lambda row:row[0],data))#获取每一行第一个元素
+list(map(lambda row:row[data.index(row)],data))#获取对角线上的元素
+max(data,key=lambda row:row[-1])#最后一个元素最大的行,row 是键，row[-1] 是值
+for row in filter(lambda row:sum(row)%2==0,data):#所有元素之和为偶数的行，lambda row: sum(row) % 2 == 0 表示一个匿名函数，接收一个参数 row，并返回 row 的元素和是否为偶数
+    print(row)
+reduce(lambda x,y:list(map(lambda xx,yy:xx+yy,x,y)),data)#每列元素求和
+def fibo():
+    a,b=1,1
+    while True:
+        yield a
+        a,b=b,a+b
+seq=fibo()
+for num in seq:
+    if num>500:
+        break
+    print(num,end=' ')
+from random import shuffle
+def func(teacherNames,examNumbers,maxPerTeacher):
+    '''
+    teacherName：教师名单，列表类型
+    examNumbers：监考总场次，整数
+    maxPerTeacher：每个老师最大的监考次数
+    假设每个考试需要两位监考老师'''
+    #构建字典，键为教师名称，值为安排监考次数
+    teachers={teacher:0 for teacher in teacherNames}
+    #存放监考安排的列表
+    result=[]
+    for _ in range(examNumbers):
+        #选择已安排场次最少的老师
+        teacher1=min(teachers.items(),key=lambda item:item[1])[0]#min 函数将根据字典中的值来比较键值对,[0] 从键值对中提取键,teachers.items() 获取字典中的所有键值对,使用 min 函数和 key=lambda item: item[1] 找到值最小的键值对
+        #在其他老师中选择已安排监考场次最少的老师
+        restTeachers=[item for item in teachers.items()
+                     if item[0]!=teacher1]#过滤掉键为 teacher1 的键值对,用于遍历字典 teachers 中的所有键值对，生成一个生成器对象
+        #乱序，避免总是两个人在一起
+        shuffle(restTeachers)
+        teacher2=min(restTeachers,key=lambda item:item[1])[0]
+        if max(teachers[teacher1],
+              teachers[teacher2])>=maxPerTeacher:
+            return '数据不合适                                                                                                                                                 '
+        #安排一场监考
+        teachers[teacher1]+=1
+        teachers[teacher2]+=1
+        result.append((teacher1,teacher2))
+    return result
+teacherNames=['教师'+str(i) for i in range(10)]
+#获取并查看监考安排
+result=func(teacherNames,32,10)
+print(result)
+if result != '数据不合适':
+    for teacher in teacherNames:
+       num=sum(1 for item in result if teacher in item)
+       print(teacher,num)
+def calcFee(total,num):
+    #只申报一人收入
+    origin=800+(total-800)*0.8
+    #申报多人完成时不扣税的基数
+    base=num*800
+    #人均收入小于等于800
+    if total <=base:
+        return(total,total-origin)
+    now=base+(total-base)*0.8
+    #返回结果（实际收入，提高的收入）
+    return(now,now-base)
+print(calcFee(10000,5))
+print(calcFee(10000,8))
+def arrangeOrder(n):
+    seats=[0]*n
+    for _ in range(n):
+        span=(0,0)
+        for pos in range(n):
+            if seats[pos]==0 and (pos==0 or seats[pos-1]==1):#当前座位 pos 是空的（seats[pos] == 0）。当前座位是第一个座位（pos == 0），或者前一个座位已经有监考老师（seats[pos - 1] == 1）
+                start=pos
+            elif (seats[pos]==1 and seats[pos-1]==0 and
+                 pos-start>span[1]-span[0]):#如果当前座位有监考老师，前一个座位是空的，并且新找到的区间长度大于之前找到的区间长度
+                span=(start,pos-1)
+        if seats[pos]==0 and pos-start>=span[1]-span[0]:
+            span=(start,pos)
+        seats[(span[1]+span[0])//2]=1#计算区间中间位置
+        print(''.join(map(str,seats)).translate(''.maketrans('01','_x')))
+arrangeOrder(18)
+def balance(base,rate):
+    while True:
+        base+=base*rate
+        yield base
+base=10
+rate=0.02
+for year,current in enumerate(balance(base,rate),start=1):
+    if current>=2*base:
+        print(year,current)
+        break
+def myEnumerate(seq):
+    index=0
+    for item in seq:
+        yield(index,item)
+        index=index+1
+for item in myEnumerate('Hello World'):
+    print(item,end=' ')
+def demo(n):
+    for i in (2,3,5):
+        while True:
+            
+             m,r=divmod(n,i)#divmod(n, i) 是一个内置函数，它同时返回商m和余数r
+             if r!=0:
+               break
+             else:n=m
+    return n==1
+print(demo(30))
+def myFilter(func,seq):
+    if func is None:
+        func=bool
+    for item in seq:
+        if func(item):
+            yield item
+print(list(myFilter(None,range(-3from functools import lru_cache
+@lru_cache(maxsize=64)
+def cni(n,i):
+    if n==i or i==0:
+        return 1
+    return cni(n-1,i)+cni(n-1,i-1)
+def yanghui(num):
+    for n in range(num):#遍历每一行
+        for i in range(n+1):#遍历每行的每一个元素
+            print(str(cni(n,i)).ljust(4),end=' ')
+    print()
+yanghui(8)
+from functools import reduce
+def demo(a,n):
+    a=str(a)
+    return sum(map(lambda i:eval(a*i),range(1,n+1)))#这个匿名函数接收一个参数i，并计算字符串a * i的值,eval函数用于计算传入的字符串表达式，并返回计算结果
+print(demo(1,3))
+def Rate(origin,userInput):
+    right=sum(map(lambda oc,uc:oc==uc,origin,userInput))
+    return round(right/len(origin),3)
+origin='Complex is better than complicated.'
+userInput='Complex is BETTER than complicated.'
+print(Rate(origin,userInput))
+def hannoi(num,src,dst,temp=None):#递归算法src原柱子dst目标柱子temp临时柱子
+    if num <1:
+        return
+    global times    #用来记录移动次数的变量为全局变量
+    hannoi(num-1,src,temp,dst)#将num-1个盘子从src移动到temp
+    print('The {0} Times move:{1}==>{2}'.format(times,src,dst))#移动最后一个盘子
+    towers[dst].append(towers[src].pop())#towers[src].pop() 表示从源柱子 src 上弹出（移除并返回）最上面的一个盘子towers[dst].append(...) 表示将弹出的盘子添加到目标柱子 dst 的最上面
+    for tower in 'ABC':#输出3根柱子上的盘子
+        print(tower,':',towers[tower])
+    times+=1
+    hannoi(num-1,temp,dst,src)#把除最后一个盘子之外的其他盘子从临时柱子上移动到目标柱子上
+times=1#记录移动次数的变量
+n=3#盘子数量
+towers={'A':list(range(n,0,-1)),
+       'B':[],
+       'C':[]
+       }#初始状态所有盘子都在A柱
+#A最初防止盘子的柱子，B临时柱子，C目标柱子
+hannoi(n,'A','C','B')
+from random import randrange
+def init():
+    #返回一个字典，键为3个门牌号值为后面的物品
+    result={i:'goat' for i in range(3)}#后面三个都是goat
+    r=randrange(3)
+    result[r]='car'#r个门后物品改为car
+    return result
+def startGame():
+    #获取本次游戏每个门的情况
+    doors=init()
+    #获取玩家选择的门号
+    while True:
+        try:
+            firstDoorNum=int(input('Choose a door to open:'))
+            assert 0<=firstDoorNum<=2
+            break
+        except:
+            print('Door number must be between{} and {}'.format(0,2))
+    #主持人查看另外两个门后物品情况
+    for door in doors.keys()-{firstDoorNum}:#遍历即除了玩家最初选择的门之外的另外两扇门
+        #打开其中一个后面为山羊的门
+        if doors[door]=='goat':
+            print('"goat" behind the door',door)
+            #获取第三个门号让玩家纠结
+            thirdDoor=(doors.keys()-{door,frstDoorNum}).pop()
+            change=input('Switch to {}?(y/n)'.format(thirdDoor))
+            finalDoorNum=thirdDoor if change=='y'else firstDoorNum
+            if doors[finalDoorNum]=='goat':
+                return 'I win'
+            else:
+                return 'you win'
+while True:
+    print('='*30)
+    print(startGame())
+    r=input('Do you want to try once more?(y/n)')
+    if r =='n':
+        break
 
 
    
